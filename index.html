@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💌 A Special Message For You</title>
+    <style>
+        :root {
+            --pink-soft: #fce4ec;
+            --pink-medium: #f8bbd0;
+            --pink-dark: #f06292;
+            --red-romantic: #e91e63;
+            --cream: #fff9fb;
+            --text-color: #5d4037;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--cream);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: var(--text-color);
+        }
+
+        /* Screen Management */
+        .screen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease-in-out, visibility 0.8s;
+            opacity: 0;
+            visibility: hidden;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Original Button Style */
+        button {
+            padding: 12px 25px;
+            border-radius: 50px;
+            border: none;
+            background: var(--pink-dark);
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(240, 98, 146, 0.3);
+            transition: transform 0.2s, background 0.3s;
+            margin: 10px;
+        }
+
+        button:hover {
+            background: var(--red-romantic);
+            transform: scale(1.05);
+        }
+
+        /* Card Styles */
+        .envelope-card {
+             background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+
+        .final-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            max-width: 450px;
+            width: 90%;
+        }
+
+        .heart-icon {
+            color: var(--red-romantic);
+            font-size: 50px;
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Letter Styling */
+        .letter-paper {
+            background: white;
+            width: 90%;
+            max-width: 450px;
+            min-height: 300px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            line-height: 1.6;
+            text-align: left;
+            font-size: 1rem;
+            transform: translateY(20px);
+            transition: transform 1.2s ease, opacity 1.2s ease;
+            opacity: 0;
+        }
+
+        .show-letter .letter-paper {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Final Screen Text Layout */
+        .final-title {
+            color: var(--red-romantic);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .final-text {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        /* Floating Hearts Animation */
+        .heart-particle {
+            position: absolute;
+            color: var(--pink-dark);
+            opacity: 0.6;
+            pointer-events: none;
+            animation: floatUp 4s linear infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .bottom-right {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+        }
+
+        .btn-group {
+            margin-top: 20px;
+        }
+
+        #btn-no {
+            position: relative;
+            transition: all 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="screen1" class="screen active" onclick="nextScreen(2)">
+        <div class="envelope-card" style="cursor: pointer;">
+            <div class="heart-icon">💌</div>
+            <h2>Hello! I have something to tell you</h2>
+            <p style="font-size: 0.9rem; color: #a1887f; margin-top: 10px;">Tap anywhere to open</p>
+        </div>
+    </div>
+
+    <div id="screen2" class="screen">
+        <h2>You got the letter 💌</h2>
+        <div class="btn-group">
+            <button onclick="showLetter()">Do you want to open it?</button>
+            <button onclick="nextScreen('sad')">No, Don't want to</button>
+        </div>
+    </div>
+
+    <div id="screen-sad" class="screen">
+        <h2 style="margin-bottom: 20px;">Awh.. Let's try again.. Please? >^<</h2>
+        <button onclick="nextScreen(2)">Do you wanna try again?</button>
+    </div>
+
+    <div id="screen3" class="screen">
+        <div id="letter-container" class="letter-paper">
+            <div id="letter-text"></div>
+        </div>
+        <button id="one-more-thing" class="bottom-right" style="display: none; opacity: 0; transition: opacity 0.5s;" onclick="nextScreen(4)">One More Thing… ❤️</button>
+    </div>
+
+    <div id="screen4" class="screen">
+        <h2>Do you love me?</h2>
+        <div class="btn-group">
+            <button id="btn-yes" onclick="nextScreen(5)">YES ❤️</button>
+            <button id="btn-no" onmouseover="moveNoButton()" onclick="moveNoButton()">NO 😅</button>
+        </div>
+    </div>
+
+    <div id="screen5" class="screen">
+        <div class="final-card">
+            <h1 class="final-title">Haha, trapped! ❤️</h1>
+            <p class="final-text">You can’t run from my love now.</p>
+            <p class="final-text">Every moment with you makes me smile even more, and I’m loving you crazier with every second that passes.</p>
+            <p class="final-text">I can’t wait for all the little adventures, laughs, and silly moments we’ll share together.</p>
+            <button style="margin-top: 20px;" onclick="resetApp()">that's all.. byee!!</button>
+        </div>
+        <div id="heart-container"></div>
+    </div>
+
+    <script>
+        const message = "Hey You,\n\nYou make my days brighter and my heart so happy. I love every little moment we share, laughing, talking, just being us, and I want to keep collecting these memories forever. Starting from our 1st monthsary, here’s to endless months, years, and adventures together. Let’s make time jealous of us.\n\nAlways curious, always yours,\n\nNgwe Sin Thunn";
+        
+        function nextScreen(num) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            const target = typeof num === 'string' ? 'screen-' + num : 'screen' + num;
+            document.getElementById(target).classList.add('active');
+
+            if (num === 5) startHearts();
+        }
+
+        function showLetter() {
+            nextScreen(3);
+            setTimeout(() => {
+                document.getElementById('screen3').classList.add('show-letter');
+                setTimeout(typeEffect, 1000);
+            }, 100);
+        }
+
+        function typeEffect() {
+            const container = document.getElementById('letter-text');
+            let i = 0;
+            container.innerHTML = "";
+            
+            function typing() {
+                if (i < message.length) {
+                    const char = message.charAt(i);
+                    container.innerHTML += char === "\n" ? "<br>" : char;
+                    i++;
+                    setTimeout(typing, 40); 
+                } else {
+                    const btn = document.getElementById('one-more-thing');
+                    btn.style.display = 'block';
+                    setTimeout(() => btn.style.opacity = '1', 50);
+                }
+            }
+            typing();
+        }
+
+        function moveNoButton() {
+            const btn = document.getElementById('btn-no');
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth - 40);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight - 40);
+            btn.style.position = 'fixed';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        function startHearts() {
+            const container = document.getElementById('heart-container');
+            const heartInterval = setInterval(() => {
+                if(!document.getElementById('screen5').classList.contains('active')) {
+                    clearInterval(heartInterval);
+                    return;
+                }
+                const heart = document.createElement('div');
+                heart.classList.add('heart-particle');
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                container.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 300);
+        }
+
+        function resetApp() {
+            document.getElementById('screen3').classList.remove('show-letter');
+            document.getElementById('letter-text').innerHTML = "";
+            document.getElementById('one-more-thing').style.display = 'none';
+            document.getElementById('one-more-thing').style.opacity = '0';
+            const noBtn = document.getElementById('btn-no');
+            noBtn.style.position = 'relative';
+            noBtn.style.left = '0';
+            noBtn.style.top = '0';
+            nextScreen(1);
+        }
+    </script>
+</body>
+</html>
