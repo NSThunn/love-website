@@ -1,299 +1,760 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💌 A Special Message For You</title>
+    <title>US — Chapter 01: The Beginning</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display for headers, Inter for clean body text, and Caveat for handwritten touches -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FDFBF7',
+                        'cream-dark': '#F4EFE6',
+                        blush: '#F9EBEA',
+                        'blush-border': '#E8D4D2',
+                        rose: '#D98880',
+                        'rose-dark': '#C0392B',
+                        burgundy: '#641E16',
+                        charcoal: '#2C2220',
+                        'charcoal-light': '#5A4A45',
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                        handwriting: ['"Caveat"', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --pink-soft: #fce4ec;
-            --pink-medium: #f8bbd0;
-            --pink-dark: #f06292;
-            --red-romantic: #e91e63;
-            --cream: #fff9fb;
-            --text-color: #5d4037;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
         body {
-            background-color: var(--cream);
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            color: var(--text-color);
+            background-color: #FDFBF7;
+            color: #2C2220;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
         }
 
-        /* Screen Management */
-        .screen {
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .font-handwriting {
+            font-family: 'Caveat', cursive;
+        }
+
+        /* Floating background stars */
+        .particle {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.8s ease-in-out, visibility 0.8s;
-            opacity: 0;
-            visibility: hidden;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .screen.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Original Button Style */
-        button {
-            padding: 12px 25px;
-            border-radius: 50px;
-            border: none;
-            background: var(--pink-dark);
-            color: white;
-            font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(240, 98, 146, 0.3);
-            transition: transform 0.2s, background 0.3s;
-            margin: 10px;
-        }
-
-        button:hover {
-            background: var(--red-romantic);
-            transform: scale(1.05);
-        }
-
-        /* Card Styles */
-        .envelope-card {
-             background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            cursor: pointer;
-        }
-
-        .final-card {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            max-width: 450px;
-            width: 90%;
-        }
-
-        .heart-icon {
-            color: var(--red-romantic);
-            font-size: 50px;
-            margin-bottom: 20px;
-            animation: pulse 1.5s infinite;
-        }
-
-        /* Letter Styling */
-        .letter-paper {
-            background: white;
-            width: 90%;
-            max-width: 450px;
-            min-height: 300px;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            line-height: 1.6;
-            text-align: left;
-            font-size: 1rem;
-            transform: translateY(20px);
-            transition: transform 1.2s ease, opacity 1.2s ease;
-            opacity: 0;
-        }
-
-        .show-letter .letter-paper {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        /* Final Screen Text Layout */
-        .final-title {
-            color: var(--red-romantic);
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-        }
-
-        .final-text {
-            font-size: 1.05rem;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            color: var(--text-color);
-        }
-
-        /* Floating Hearts Animation */
-        .heart-particle {
-            position: absolute;
-            color: var(--pink-dark);
-            opacity: 0.6;
+            background: rgba(217, 136, 128, 0.3);
+            border-radius: 50%;
             pointer-events: none;
-            animation: floatUp 4s linear infinite;
+            animation: floatParticle 12s infinite linear;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) scale(0.8); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
         }
 
-        @keyframes floatUp {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        /* Card flip effect */
+        .flip-card {
+            perspective: 1000px;
+        }
+        .flip-card-inner {
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            backface-visibility: hidden;
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
         }
 
-        .bottom-right {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FDFBF7;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E8D4D2;
+            border-radius: 3px;
         }
 
-        .btn-group {
-            margin-top: 20px;
+        .screen-transition {
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         }
-
-        #btn-no {
-            position: relative;
-            transition: all 0.2s ease;
+        
+        .letter-text-fix {
+            white-space: pre-wrap;
+            word-spacing: 0.3em;
+            letter-spacing: 0.03em;
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col justify-between selection:bg-rose/20 selection:text-burgundy relative">
 
-    <div id="screen1" class="screen active" onclick="nextScreen(2)">
-        <div class="envelope-card" style="cursor: pointer;">
-            <div class="heart-icon">💌</div>
-            <h2>Hello! I have something to tell you</h2>
-            <p style="font-size: 0.9rem; color: #a1887f; margin-top: 10px;">Tap anywhere to open</p>
-        </div>
-    </div>
+    <!-- Background Floating Particles Container -->
+    <div id="particles-container" class="absolute inset-0 overflow-hidden pointer-events-none z-0"></div>
 
-    <div id="screen2" class="screen">
-        <h2>You got the letter 💌</h2>
-        <div class="btn-group">
-            <button onclick="showLetter()">Do you want to open it?</button>
-            <button onclick="nextScreen('sad')">No, Don't want to</button>
-        </div>
-    </div>
-
-    <div id="screen-sad" class="screen">
-        <h2 style="margin-bottom: 20px;">Awh.. Let's try again.. Please? >^<</h2>
-        <button onclick="nextScreen(2)">Do you wanna try again?</button>
-    </div>
-
-    <div id="screen3" class="screen">
-        <div id="letter-container" class="letter-paper">
-            <div id="letter-text"></div>
-        </div>
-        <button id="one-more-thing" class="bottom-right" style="display: none; opacity: 0; transition: opacity 0.5s;" onclick="nextScreen(4)">One More Thing… ❤️</button>
-    </div>
-
-    <div id="screen4" class="screen">
-        <h2>Do you love me?</h2>
-        <div class="btn-group">
-            <button id="btn-yes" onclick="nextScreen(5)">YES ❤️</button>
-            <button id="btn-no" onmouseover="moveNoButton()" onclick="moveNoButton()">NO 😅</button>
-        </div>
-    </div>
-
-    <div id="screen5" class="screen">
-        <div class="final-card">
-            <h1 class="final-title">Haha, trapped! ❤️</h1>
-            <p class="final-text">You can’t run from my love now.</p>
-            <p class="final-text">Every moment with you makes me smile even more, and I’m loving you crazier with every second that passes.</p>
-            <p class="final-text">I can’t wait for all the little adventures, laughs, and silly moments we’ll share together.</p>
-            <button style="margin-top: 20px;" onclick="resetApp()">that's all.. byee!!</button>
-        </div>
-        <div id="heart-container"></div>
-    </div>
-
+    <!-- CONFIGURATION & EDITABLE DATA SCRIPT -->
     <script>
-        const message = "Hey You,\n\nYou make my days brighter and my heart so happy. I love every little moment we share, laughing, talking, just being us, and I want to keep collecting these memories forever. Starting from our 1st monthsary, here’s to endless months, years, and adventures together. Let’s make time jealous of us.\n\nAlways curious, always yours,\n\nNgwe Sin Thunn";
-        
-        function nextScreen(num) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            const target = typeof num === 'string' ? 'screen-' + num : 'screen' + num;
-            document.getElementById(target).classList.add('active');
-
-            if (num === 5) startHearts();
-        }
-
-        function showLetter() {
-            nextScreen(3);
-            setTimeout(() => {
-                document.getElementById('screen3').classList.add('show-letter');
-                setTimeout(typeEffect, 1000);
-            }, 100);
-        }
-
-        function typeEffect() {
-            const container = document.getElementById('letter-text');
-            let i = 0;
-            container.innerHTML = "";
+        const relationshipData = {
+            partnerName: "My Love", // Edit your partner's name here
+            myName: "Yours Mee Mee",         // Edit your name here
+            startDate: "February 20, 2026", // Edit your starting date here
+            memoryCount: "01",     // Memory counter display number
             
-            function typing() {
-                if (i < message.length) {
-                    const char = message.charAt(i);
-                    container.innerHTML += char === "\n" ? "<br>" : char;
-                    i++;
-                    setTimeout(typing, 40); 
+            memories: [
+                {
+                    title: "The Day We Met",
+                    date: "Month 01 · Day 01",
+                    description: "A chance encounter or a simple message that somehow turned into hours of talking.",
+                    quote: "“I didn't know it then, but that exact moment changed everything.”"
+                },
+                {
+                    title: "Our First Real Conversation",
+                    date: "Early On",
+                    description: "Talking about everything and nothing at all, realizing how easily time flew by when we spoke.",
+                    quote: "“A tiny conversation that somehow became something much bigger.”"
+                },
+                {
+                    title: "Our First Inside Joke",
+                    date: "Along the Way",
+                    description: "That one random thing only the two of us understand, which still makes us smile instantly.",
+                    quote: "“The beginning of our own secret language.”"
+                }
+            ],
+
+            unexpectedThings: [
+                {
+                    front: "I didn't expect to get attached this quickly.",
+                    back: "It usually takes me forever to let people in. With you, it somehow felt effortless from day one."
+                },
+                {
+                    front: "I didn't expect our random conversations to become part of my day.",
+                    back: "Now I find myself checking my phone, hoping to see a notification from you."
+                },
+                {
+                    front: "I didn't expect one month to go this fast.",
+                    back: "They say time flies when you're having fun, but 30 days felt like a single weekend."
+                },
+                {
+                    front: "I didn't expect to be making an entire website for our first monthsary.",
+                    back: "Okay, maybe I went a little overboard... but you're worth every single line of code."
+                },
+                {
+                    front: "I definitely didn't expect you to become this important to me.",
+                    back: "And yet, here we are. Chapter 01, and you already feel like home."
+                }
+            ],
+
+            thingsILike: [
+                "I like the way you make me smile without even trying.",
+                "I like talking to you about the most random things.",
+                "I like hearing about your day and how your mind works.",
+                "I like the little thoughtful things you do.",
+                "I like that I can be completely myself around you.",
+                "I like the quiet comfort when we share time together."
+            ],
+
+            futureMemories: [
+                { title: "First trip together", desc: "Packing bags, getting lost in a new city, and making unforgettable stories." },
+                { title: "First proper couple photo", desc: "An actual nice photo where neither of us is blinking or laughing uncontrollably." },
+                { title: "First cozy movie night", desc: "Blankets, snacks, and arguing over what movie to watch for an hour." },
+                { title: "First spontaneous adventure", desc: "Heading out with zero plans and seeing where the day takes us." },
+                { title: "First full year anniversary", desc: "Looking back at Chapter 01 and smiling at how young and fresh we were." },
+                { title: "A memory we haven't even imagined yet", desc: "The best stories are the ones that catch you completely by surprise." }
+            ],
+
+            loveLetter: `Hey you,
+
+It's only been one month, but somehow you've already become such a special part of my days.
+
+We may not have a million memories yet, and honestly? I kind of like that. It means we still have so many firsts waiting for us.
+
+More conversations late into the night. More silly jokes. More photos we'll laugh at later. More little moments that we won't write down, but we'll remember how they made us feel.
+
+I don't know what the next chapters are going to look like. But I'm really, really happy I get to find out with you.
+
+Happy 1st Monthsary.
+
+— Yours Mee Mee`
+        };
+    </script>
+
+    <!-- Top Navigation Bar / Progress -->
+    <header class="w-full px-6 py-4 flex justify-between items-center z-20 max-w-4xl mx-auto">
+        <div class="text-xs uppercase tracking-widest text-charcoal-light font-medium flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-rose animate-pulse"></span>
+            <span>US — Chapter 01</span>
+        </div>
+        <div id="progress-indicator" class="text-xs font-serif tracking-widest text-burgundy bg-blush px-3 py-1 rounded-full border border-blush-border">
+            01 / 10
+        </div>
+    </header>
+
+    <!-- Main Container for Screens -->
+    <main class="flex-1 flex items-center justify-center px-4 py-8 relative z-10 max-w-3xl w-full mx-auto">
+        
+        <!-- SCREEN 01: THE COVER -->
+        <section id="screen-1" class="story-screen w-full text-center space-y-6 screen-transition opacity-100 scale-100">
+            <div class="inline-block mb-2">
+                <span class="text-xs font-semibold tracking-[0.3em] uppercase text-rose-dark bg-blush px-4 py-1.5 rounded-full border border-blush-border">
+                    CHAPTER 01
+                </span>
+            </div>
+            <h1 class="text-6xl md:text-8xl font-serif font-bold text-burgundy tracking-tight">
+                US
+            </h1>
+            <p class="text-xl md:text-2xl font-serif italic text-charcoal-light">
+                The Beginning
+            </p>
+            <div id="display-start-date" class="text-sm tracking-wider uppercase text-rose-dark font-medium pt-2">
+                <!-- Injected via JS -->
+            </div>
+            <div class="pt-4">
+                <p class="font-handwriting text-2xl text-charcoal-light tracking-wide">
+                    “A story that has only just begun.”
+                </p>
+            </div>
+            <div class="pt-8">
+                <button onclick="nextScreen()" class="group relative inline-flex items-center gap-3 px-8 py-4 bg-burgundy text-cream text-sm uppercase tracking-widest rounded-full shadow-lg hover:bg-rose-dark transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0">
+                    <span>OPEN OUR STORY</span>
+                    <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 02: WAIT... -->
+        <section id="screen-2" class="story-screen w-full text-center space-y-6 screen-transition hidden opacity-0 scale-95">
+            <div class="inline-block mb-1">
+                <span class="text-xs font-semibold tracking-[0.2em] uppercase text-charcoal-light">
+                    BEFORE WE CONTINUE
+                </span>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-serif text-burgundy font-medium">
+                Okay... before we continue.
+            </h2>
+            <div class="max-w-md mx-auto space-y-3 text-left bg-cream-dark/60 p-6 rounded-2xl border border-blush-border/50 text-charcoal text-base md:text-lg leading-relaxed shadow-sm">
+                <p class="flex items-center gap-3 opacity-90"><i class="fa-solid fa-circle-dot text-rose text-xs"></i> We've only been together for one month.</p>
+                <p class="flex items-center gap-3 opacity-90"><i class="fa-solid fa-circle-dot text-rose text-xs"></i> We don't have hundreds of pictures.</p>
+                <p class="flex items-center gap-3 opacity-90"><i class="fa-solid fa-circle-dot text-rose text-xs"></i> We don't have years of memories.</p>
+                <p class="flex items-center gap-3 opacity-90"><i class="fa-solid fa-circle-dot text-rose text-xs"></i> We don't have a giant love story yet.</p>
+            </div>
+            <div class="pt-2">
+                <p class="font-serif italic text-xl text-burgundy">
+                    And that's okay.
+                </p>
+            </div>
+            <div class="pt-6">
+                <button onclick="nextScreen()" class="inline-flex items-center gap-3 px-8 py-4 bg-blush text-burgundy border border-blush-border text-sm uppercase tracking-widest rounded-full hover:bg-rose/10 transition-all duration-300">
+                    <span>SO WHAT'S THIS WEBSITE FOR?</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 03: BECAUSE WE'RE JUST STARTING -->
+        <section id="screen-3" class="story-screen w-full text-center space-y-6 screen-transition hidden opacity-0 scale-95">
+            <h2 class="text-3xl md:text-5xl font-serif text-burgundy font-medium leading-tight">
+                Because we're just getting started.
+            </h2>
+            <div class="max-w-lg mx-auto space-y-4 text-charcoal-light text-base md:text-lg font-light leading-relaxed">
+                <p>We don't need a hundred memories to celebrate us.</p>
+                <p class="font-medium text-burgundy">We just need one beginning.</p>
+            </div>
+            <div class="py-4 flex justify-center gap-8 text-center">
+                <div class="bg-blush/60 px-6 py-4 rounded-2xl border border-blush-border">
+                    <span class="block text-2xl md:text-3xl font-serif font-bold text-burgundy">01</span>
+                    <span class="text-xs uppercase tracking-widest text-charcoal-light">Month</span>
+                </div>
+                <div class="bg-blush/60 px-6 py-4 rounded-2xl border border-blush-border">
+                    <span class="block text-2xl md:text-3xl font-serif font-bold text-burgundy">01</span>
+                    <span class="text-xs uppercase tracking-widest text-charcoal-light">Story</span>
+                </div>
+                <div class="bg-blush/60 px-6 py-4 rounded-2xl border border-blush-border">
+                    <span class="block text-2xl md:text-3xl font-serif font-bold text-burgundy">02</span>
+                    <span class="text-xs uppercase tracking-widest text-charcoal-light">People</span>
+                </div>
+            </div>
+            <p class="font-handwriting text-2xl text-rose-dark">
+                And a lot more chapters waiting to happen.
+            </p>
+            <div class="pt-6">
+                <button onclick="nextScreen()" class="inline-flex items-center gap-3 px-8 py-4 bg-burgundy text-cream text-sm uppercase tracking-widest rounded-full shadow-md hover:bg-rose-dark transition-all">
+                    <span>LET'S LOOK BACK</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 04: OUR FIRST MONTH (TIMELINE) -->
+        <section id="screen-4" class="story-screen w-full space-y-6 screen-transition hidden opacity-0 scale-95">
+            <div class="text-center space-y-2">
+                <span class="text-xs font-semibold tracking-[0.2em] uppercase text-rose-dark">CHAPTER 01 · MILESTONES</span>
+                <h2 class="text-3xl md:text-4xl font-serif text-burgundy font-medium">OUR FIRST MONTH</h2>
+                <p class="text-sm text-charcoal-light">Click any moment to reveal the little details.</p>
+            </div>
+            
+            <div id="timeline-container" class="space-y-3 max-h-[50vh] overflow-y-auto pr-1">
+                <!-- Dynamically populated timeline items -->
+            </div>
+
+            <div class="text-center pt-4">
+                <button onclick="nextScreen()" class="inline-flex items-center gap-3 px-8 py-3 bg-burgundy text-cream text-sm uppercase tracking-widest rounded-full shadow-md hover:bg-rose-dark transition-all">
+                    <span>CONTINUE</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 05: THINGS I DIDN'T EXPECT -->
+        <section id="screen-5" class="story-screen w-full space-y-6 screen-transition hidden opacity-0 scale-95">
+            <div class="text-center space-y-2">
+                <span class="text-xs font-semibold tracking-[0.2em] uppercase text-rose-dark">REFLECTIONS</span>
+                <h2 class="text-3xl md:text-4xl font-serif text-burgundy font-medium">THINGS I DIDN'T EXPECT</h2>
+                <p class="text-sm text-charcoal-light">Click a card to flip it over.</p>
+            </div>
+
+            <div id="unexpected-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-[50vh] overflow-y-auto pr-1">
+                <!-- Dynamically populated flip cards -->
+            </div>
+
+            <div class="text-center pt-2">
+                <button onclick="nextScreen()" class="inline-flex items-center gap-3 px-8 py-3 bg-burgundy text-cream text-sm uppercase tracking-widest rounded-full shadow-md hover:bg-rose-dark transition-all">
+                    <span>NEXT</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 06: A FEW THINGS I LIKE ABOUT YOU -->
+        <section id="screen-6" class="story-screen w-full space-y-6 screen-transition hidden opacity-0 scale-95">
+            <div class="text-center space-y-2">
+                <span class="text-xs font-semibold tracking-[0.2em] uppercase text-rose-dark">APPRECIATION</span>
+                <h2 class="text-3xl md:text-4xl font-serif text-burgundy font-medium">THINGS I LIKE ABOUT YOU</h2>
+                <p class="text-sm text-charcoal-light">Tap the cards to reveal.</p>
+            </div>
+
+            <div id="likes-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pr-1">
+                <!-- Dynamically populated grid -->
+            </div>
+
+            <div class="text-center pt-2">
+                <button onclick="nextScreen()" class="inline-flex items-center gap-3 px-8 py-3 bg-burgundy text-cream text-sm uppercase tracking-widest rounded-full shadow-md hover:bg-rose-dark transition-all">
+                    <span>CONTINUE</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 07: OUR FUTURE (LOCKED MEMORIES) -->
+        <section id="screen-7" class="story-screen w-full space-y-6 screen-transition hidden opacity-0 scale-95">
+            <div class="text-center space-y-2">
+                <span class="text-xs font-semibold tracking-[0.2em] uppercase text-rose-dark">AHEAD OF US</span>
+                <h2 class="text-3xl md:text-4xl font-serif text-burgundy font-medium">THINGS WE HAVEN'T DONE YET</h2>
+                <p class="text-sm text-charcoal-light">Locked memories waiting for future chapters.</p>
+            </div>
+
+            <div id="future-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[48vh] overflow-y-auto pr-1">
+                <!-- Dynamically populated future cards -->
+            </div>
+
+            <div class="text-center pt-2">
+                <button onclick="nextScreen()" class="inline-flex items-center gap-3 px-8 py-3 bg-burgundy text-cream text-sm uppercase tracking-widest rounded-full shadow-md hover:bg-rose-dark transition-all">
+                    <span>NEXT</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 08: THE MEMORY COUNTER -->
+        <section id="screen-8" class="story-screen w-full text-center space-y-6 screen-transition hidden opacity-0 scale-95">
+            <span class="text-xs font-semibold tracking-[0.2em] uppercase text-rose-dark">STATISTICS</span>
+            <h2 class="text-3xl font-serif text-burgundy font-medium">MEMORIES COLLECTED</h2>
+            
+            <div class="py-6 bg-blush/40 max-w-xs mx-auto rounded-3xl border border-blush-border shadow-inner">
+                <div id="memory-counter-display" class="text-7xl font-serif font-bold text-burgundy tracking-tight">
+                    03
+                </div>
+                <div class="text-xs uppercase tracking-widest text-rose-dark font-medium mt-2">
+                    and counting...
+                </div>
+            </div>
+
+            <div class="space-y-2 max-w-md mx-auto text-charcoal-light text-base">
+                <p class="font-serif italic">“This number is small right now.”</p>
+                <p class="font-medium text-burgundy">“Let's see how big it gets.”</p>
+            </div>
+
+            <div class="pt-4">
+                <button onclick="nextScreen()" class="inline-flex items-center gap-3 px-8 py-3 bg-burgundy text-cream text-sm uppercase tracking-widest rounded-full shadow-md hover:bg-rose-dark transition-all">
+                    <span>READ MY LETTER</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 09: A MESSAGE FROM ME -->
+        <section id="screen-9" class="story-screen w-full space-y-6 screen-transition hidden opacity-0 scale-95">
+            <div class="text-center space-y-1">
+                <span class="text-xs font-semibold tracking-[0.2em] uppercase text-rose-dark">A PERSONAL NOTE</span>
+                <h2 class="text-3xl font-serif text-burgundy font-medium">A MESSAGE FROM ME</h2>
+            </div>
+
+            <div class="bg-cream-dark/80 p-8 md:p-10 rounded-2xl border border-blush-border shadow-sm max-h-[52vh] overflow-y-auto text-left relative">
+                <div id="typewriter-text" class="font-handwriting text-2xl md:text-[1.65rem] text-charcoal leading-[2.1] letter-text-fix">
+                    <!-- Typed text appears here -->
+                </div>
+            </div>
+
+            <div class="text-center pt-2">
+                <button onclick="nextScreen()" class="inline-flex items-center gap-3 px-8 py-3 bg-burgundy text-cream text-sm uppercase tracking-widest rounded-full shadow-md hover:bg-rose-dark transition-all">
+                    <span>NEXT CHAPTER</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SCREEN 10: THE NEXT CHAPTER & PLAYFUL QUESTION -->
+        <section id="screen-10" class="story-screen w-full text-center space-y-6 screen-transition hidden opacity-0 scale-95">
+            <div class="space-y-2">
+                <h2 class="text-4xl font-serif font-bold text-burgundy">CHAPTER 01</h2>
+                <div class="inline-block bg-blush px-4 py-1 rounded-full text-xs font-semibold tracking-widest text-rose-dark border border-blush-border">
+                    COMPLETE ✓
+                </div>
+            </div>
+
+            <div class="space-y-1 py-2">
+                <p class="text-xs uppercase tracking-widest text-charcoal-light">NEXT CHAPTER</p>
+                <p class="text-2xl font-serif text-burgundy font-medium">COMING SOON</p>
+                <p class="font-handwriting text-2xl text-rose-dark pt-1">“Let's write it together.”</p>
+            </div>
+
+            <!-- Playful Question Box -->
+            <div class="bg-blush/60 p-6 rounded-2xl border border-blush-border max-w-md mx-auto space-y-4">
+                <p class="font-serif text-lg text-burgundy font-medium">One important question...</p>
+                <p class="text-sm text-charcoal-light">Are you ready for Chapter 02?</p>
+                <div class="flex justify-center gap-4 pt-2">
+                    <button onclick="handleQuestionAnswer('yes')" class="px-6 py-2.5 bg-burgundy text-cream rounded-full text-sm font-medium tracking-wider shadow hover:bg-rose-dark transition-all">
+                        YES ❤️
+                    </button>
+                    <button onclick="handleQuestionAnswer('obviously')" class="px-6 py-2.5 bg-cream text-burgundy border border-burgundy/30 rounded-full text-sm font-medium tracking-wider hover:bg-blush transition-all">
+                        OBVIOUSLY
+                    </button>
+                </div>
+                <p id="question-response" class="font-handwriting text-xl text-rose-dark hidden pt-1"></p>
+            </div>
+
+            <div class="pt-2">
+                <button onclick="nextScreen()" class="inline-flex items-center gap-3 px-8 py-3 bg-burgundy text-cream text-sm uppercase tracking-widest rounded-full shadow-md hover:bg-rose-dark transition-all">
+                    <span>FINISH STORY</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- FINAL SCREEN -->
+        <section id="screen-final" class="story-screen w-full text-center space-y-8 screen-transition hidden opacity-0 scale-95">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-lg mx-auto">
+                <div class="bg-blush/50 p-4 rounded-xl border border-blush-border">
+                    <span class="block text-2xl font-serif font-bold text-burgundy">30</span>
+                    <span class="text-[10px] uppercase tracking-widest text-charcoal-light">Days</span>
+                </div>
+                <div class="bg-blush/50 p-4 rounded-xl border border-blush-border">
+                    <span class="block text-2xl font-serif font-bold text-burgundy">01</span>
+                    <span class="text-[10px] uppercase tracking-widest text-charcoal-light">Beginning</span>
+                </div>
+                <div class="bg-blush/50 p-4 rounded-xl border border-blush-border">
+                    <span class="block text-2xl font-serif font-bold text-burgundy">02</span>
+                    <span class="text-[10px] uppercase tracking-widest text-charcoal-light">People</span>
+                </div>
+                <div class="bg-blush/50 p-4 rounded-xl border border-blush-border">
+                    <span class="block text-2xl font-serif font-bold text-burgundy">∞</span >
+                    <span class="text-[10px] uppercase tracking-widest text-charcoal-light">Possibilities</span>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <h1 class="text-4xl md:text-5xl font-serif font-bold text-burgundy">
+                    Happy 1st Monthsary ❤️
+                </h1>
+                <p class="font-handwriting text-3xl text-rose-dark">
+                    “This is only Chapter 01.”
+                </p>
+            </div>
+
+            <div class="pt-4 space-y-4">
+                <p class="text-sm font-medium uppercase tracking-widest text-charcoal-light">
+                    See you in Chapter 02.
+                </p>
+                <div>
+                    <button onclick="restartStory()" class="inline-flex items-center gap-2 px-6 py-2.5 bg-transparent border border-blush-border text-charcoal text-xs uppercase tracking-widest rounded-full hover:bg-blush transition-all">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>RESTART STORY</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation Controls -->
+    <footer class="w-full px-6 py-4 flex justify-between items-center z-20 max-w-4xl mx-auto">
+        <button onclick="prevScreen()" id="prev-btn" class="text-xs uppercase tracking-widest text-charcoal-light hover:text-burgundy flex items-center gap-2 transition-colors disabled:opacity-30 disabled:pointer-events-none">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Previous</span>
+        </button>
+        <div class="text-xs text-charcoal-light font-handwriting text-lg">
+            US — Chapter 01
+        </div>
+        <button onclick="nextScreen()" id="next-btn" class="text-xs uppercase tracking-widest text-charcoal-light hover:text-burgundy flex items-center gap-2 transition-colors disabled:opacity-30">
+            <span>Next</span>
+            <i class="fa-solid fa-arrow-right"></i>
+        </button>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        let currentScreenIndex = 0;
+        const screens = [
+            'screen-1', 'screen-2', 'screen-3', 'screen-4', 'screen-5',
+            'screen-6', 'screen-7', 'screen-8', 'screen-9', 'screen-10', 'screen-final'
+        ];
+        let typewriterStarted = false;
+
+        // Initialize particles
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            const particleCount = 18;
+            for (let i = 0; i < particleCount; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const size = Math.random() * 6 + 3;
+                p.style.width = `${size}px`;
+                p.style.height = `${size}px`;
+                p.style.left = `${Math.random() * 100}%`;
+                p.style.animationDuration = `${Math.random() * 8 + 8}s`;
+                p.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(p);
+            }
+        }
+
+        // Load content from configuration object
+        function loadConfigurationData() {
+            // Start date
+            document.getElementById('display-start-date').innerText = relationshipData.startDate;
+            // Memory counter
+            document.getElementById('memory-counter-display').innerText = relationshipData.memoryCount;
+
+            // Populate Timeline (Screen 4)
+            const timelineContainer = document.getElementById('timeline-container');
+            relationshipData.memories.forEach((mem, index) => {
+                const item = document.createElement('div');
+                item.className = 'bg-cream-dark/50 border border-blush-border rounded-xl p-4 cursor-pointer transition-all hover:bg-cream-dark';
+                item.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <span class="text-xs font-semibold uppercase tracking-wider text-rose-dark">${mem.date}</span>
+                            <h3 class="font-serif font-medium text-lg text-burgundy">${mem.title}</h3>
+                        </div>
+                        <i class="fa-solid fa-chevron-down text-xs text-charcoal-light transition-transform duration-300" id="chevron-${index}"></i>
+                    </div>
+                    <div class="timeline-content hidden pt-3 mt-2 border-t border-blush-border/50 text-sm text-charcoal space-y-2">
+                        <p>${mem.description}</p>
+                        <p class="font-handwriting text-xl text-rose-dark">${mem.quote}</p>
+                    </div>
+                `;
+                item.onclick = () => {
+                    const content = item.querySelector('.timeline-content');
+                    const chevron = document.getElementById(`chevron-${index}`);
+                    content.classList.toggle('hidden');
+                    chevron.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+                };
+                timelineContainer.appendChild(item);
+            });
+
+            // Populate Unexpected Cards (Screen 5)
+            const unexpectedContainer = document.getElementById('unexpected-container');
+            relationshipData.unexpectedThings.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = 'flip-card h-36 cursor-pointer';
+                card.innerHTML = `
+                    <div class="flip-card-inner relative w-full h-full text-center rounded-xl shadow-sm">
+                        <div class="flip-card-front absolute inset-0 bg-cream-dark/70 border border-blush-border p-4 rounded-xl flex items-center justify-center text-center font-serif text-burgundy text-sm md:text-base">
+                            ${item.front}
+                        </div>
+                        <div class="flip-card-back absolute inset-0 bg-burgundy text-cream p-4 rounded-xl flex items-center justify-center text-center text-xs md:text-sm font-light">
+                            ${item.back}
+                        </div>
+                    </div>
+                `;
+                card.onclick = () => card.classList.toggle('flipped');
+                unexpectedContainer.appendChild(card);
+            });
+
+            // Populate Likes Grid (Screen 6)
+            const likesContainer = document.getElementById('likes-container');
+            relationshipData.thingsILike.forEach((like, index) => {
+                const tile = document.createElement('div');
+                tile.className = 'bg-cream-dark/60 border border-blush-border p-4 rounded-xl text-center cursor-pointer transition-all hover:bg-blush/40 flex flex-col items-center justify-center min-h-[90px] relative overflow-hidden group';
+                tile.innerHTML = `
+                    <div class="tile-icon text-rose text-lg transition-transform duration-300 group-hover:scale-125">✦</div>
+                    <div class="tile-text hidden text-xs md:text-sm text-burgundy font-medium text-center animate-fadeIn">
+                        ${like}
+                    </div>
+                `;
+                tile.onclick = () => {
+                    const icon = tile.querySelector('.tile-icon');
+                    const text = tile.querySelector('.tile-text');
+                    icon.classList.toggle('hidden');
+                    text.classList.toggle('hidden');
+                };
+                likesContainer.appendChild(tile);
+            });
+
+            // Populate Future Memories (Screen 7)
+            const futureContainer = document.getElementById('future-container');
+            relationshipData.futureMemories.forEach((mem, index) => {
+                const fCard = document.createElement('div');
+                fCard.className = 'bg-cream-dark/50 border border-blush-border p-4 rounded-xl flex items-start gap-3 cursor-pointer transition-all hover:bg-cream-dark';
+                fCard.innerHTML = `
+                    <div class="text-rose text-lg pt-0.5">🔒</div>
+                    <div>
+                        <h4 class="font-serif font-medium text-burgundy text-sm md:text-base">${mem.title}</h4>
+                        <p class="text-xs text-charcoal-light mt-0.5">We haven't made this memory yet. Maybe someday.</p>
+                    </div>
+                `;
+                fCard.onclick = () => {
+                    fCard.classList.toggle('bg-blush');
+                    const p = fCard.querySelector('p');
+                    if (p.innerText.includes("Maybe someday")) {
+                        p.innerText = "Locked 🔒 · Waiting for future chapters.";
+                        p.classList.add('font-medium', 'text-burgundy');
+                    } else {
+                        p.innerText = "We haven't made this memory yet. Maybe someday.";
+                        p.classList.remove('font-medium', 'text-burgundy');
+                    }
+                };
+                futureContainer.appendChild(fCard);
+            });
+        }
+
+        // Screen Navigation
+        function updateScreenDisplay() {
+            screens.forEach((id, idx) => {
+                const el = document.getElementById(id);
+                if (idx === currentScreenIndex) {
+                    el.classList.remove('hidden');
+                    setTimeout(() => {
+                        el.classList.remove('opacity-0', 'scale-95');
+                        el.classList.add('opacity-100', 'scale-100');
+                    }, 20);
                 } else {
-                    const btn = document.getElementById('one-more-thing');
-                    btn.style.display = 'block';
-                    setTimeout(() => btn.style.opacity = '1', 50);
+                    el.classList.remove('opacity-100', 'scale-100');
+                    el.classList.add('opacity-0', 'scale-95');
+                    setTimeout(() => {
+                        el.classList.add('hidden');
+                    }, 500);
+                }
+            });
+
+            // Update Progress Indicator
+            const progressNum = Math.min(currentScreenIndex + 1, 10);
+            document.getElementById('progress-indicator').innerText = `${String(progressNum).padStart(2, '0')} / 10`;
+
+            // Update footer buttons
+            document.getElementById('prev-btn').disabled = currentScreenIndex === 0;
+            const nextBtn = document.getElementById('next-btn');
+            if (currentScreenIndex === screens.length - 1) {
+                nextBtn.style.display = 'none';
+            } else {
+                nextBtn.style.display = 'flex';
+            }
+
+            // Trigger Typewriter if on Screen 9
+            if (screens[currentScreenIndex] === 'screen-9' && !typewriterStarted) {
+                typewriterStarted = true;
+                startTypewriter();
+            }
+        }
+
+        function nextScreen() {
+            if (currentScreenIndex < screens.length - 1) {
+                currentScreenIndex++;
+                updateScreenDisplay();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function prevScreen() {
+            if (currentScreenIndex > 0) {
+                currentScreenIndex--;
+                updateScreenDisplay();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function restartStory() {
+            currentScreenIndex = 0;
+            typewriterStarted = false;
+            document.getElementById('typewriter-text').innerText = '';
+            updateScreenDisplay();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Typewriter Effect for Love Letter
+        function startTypewriter() {
+            const textContainer = document.getElementById('typewriter-text');
+            const message = relationshipData.loveLetter;
+            let i = 0;
+            textContainer.textContent = '';
+            function type() {
+                if (i < message.length) {
+                    textContainer.textContent += message.charAt(i);
+                    i++;
+                    setTimeout(type, 25);
                 }
             }
-            typing();
+            type();
         }
 
-        function moveNoButton() {
-            const btn = document.getElementById('btn-no');
-            const x = Math.random() * (window.innerWidth - btn.offsetWidth - 40);
-            const y = Math.random() * (window.innerHeight - btn.offsetHeight - 40);
-            btn.style.position = 'fixed';
-            btn.style.left = x + 'px';
-            btn.style.top = y + 'px';
+        // Playful Question Response
+        function handleQuestionAnswer(answer) {
+            const resp = document.getElementById('question-response');
+            resp.classList.remove('hidden');
+            if (answer === 'yes') {
+                resp.innerText = "❤️ Knew you'd say yes!";
+            } else {
+                resp.innerText = "✨ Obviously! Can't wait for Chapter 02.";
+            }
         }
 
-        function startHearts() {
-            const container = document.getElementById('heart-container');
-            const heartInterval = setInterval(() => {
-                if(!document.getElementById('screen5').classList.contains('active')) {
-                    clearInterval(heartInterval);
-                    return;
-                }
-                const heart = document.createElement('div');
-                heart.classList.add('heart-particle');
-                heart.innerHTML = '❤️';
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
-                container.appendChild(heart);
-                setTimeout(() => heart.remove(), 5000);
-            }, 300);
-        }
-
-        function resetApp() {
-            document.getElementById('screen3').classList.remove('show-letter');
-            document.getElementById('letter-text').innerHTML = "";
-            document.getElementById('one-more-thing').style.display = 'none';
-            document.getElementById('one-more-thing').style.opacity = '0';
-            const noBtn = document.getElementById('btn-no');
-            noBtn.style.position = 'relative';
-            noBtn.style.left = '0';
-            noBtn.style.top = '0';
-            nextScreen(1);
-        }
+        // Run on load
+        window.onload = function() {
+            createParticles();
+            loadConfigurationData();
+            updateScreenDisplay();
+        };
     </script>
 </body>
 </html>
